@@ -1,0 +1,280 @@
+{
+  "name":"Kah-Mei",
+  "size":1,
+  "characterStats":[
+    {
+      "name":"bab",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"bab",
+        "type":"base",
+        "duration":-1,
+        "amount":6
+      }],
+      "sum":{
+        "total":6,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"bab",
+          "type":"base",
+          "duration":-1,
+          "amount":6
+        }]
+      }
+    },{
+      "name":"strength",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"strength",
+        "type":"base",
+        "duration":-1,
+        "amount":14
+      }],
+      "sum":{
+        "total":14,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"strength",
+          "type":"base",
+          "duration":-1,
+          "amount":14
+        }]
+      }
+    },{
+      "name":"dexterity",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"dexterity",
+        "type":"base",
+        "duration":-1,
+        "amount":20
+      },{
+        "name":"Belt of incredible dexterity",
+        "source":"Belt",
+        "stat":"dexterity",
+        "type":"enhancement",
+        "duration":-1,
+        "amount":2
+      }],
+      "sum":{
+        "total":22,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"dexterity",
+          "type":"base",
+          "duration":-1,
+          "amount":20
+        },{
+          "name":"Belt of incredible dexterity",
+          "source":"Belt",
+          "stat":"dexterity",
+          "type":"enhancement",
+          "duration":-1,
+          "amount":2
+        }]
+      }
+    },{
+      "name":"constitution",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"constitution",
+        "type":"base",
+        "duration":-1,
+        "amount":12
+      }],
+      "sum":{
+        "total":12,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"constitution",
+          "type":"base",
+          "duration":-1,
+          "amount":12
+        }]
+      }
+    },{
+      "name":"intelligence",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"intelligence",
+        "type":"base",
+        "duration":-1,
+        "amount":13
+      }],
+      "sum":{
+        "total":13,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"intelligence",
+          "type":"base",
+          "duration":-1,
+          "amount":13
+        }]
+      }
+    },{
+      "name":"wisdom",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"wisdom",
+        "type":"base",
+        "duration":-1,
+        "amount":10
+      }],
+      "sum":{
+        "total":10,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"wisdom",
+          "type":"base",
+          "duration":-1,
+          "amount":10
+        }]
+      }
+    },{
+      "name":"charisma",
+      "bonuses":[{
+        "name":"character base",
+        "source":"character base",
+        "stat":"charisma",
+        "type":"base",
+        "duration":-1,
+        "amount":20
+      },{
+        "name":"Headband of alluring charisma",
+        "source":"headband",
+        "stat":"charisma",
+        "type":"enhancement",
+        "duration":-1,
+        "amount":2
+      }],
+      "sum":{
+        "total":22,
+        "bonuses":[{
+          "name":"character base",
+          "source":"character base",
+          "stat":"charisma",
+          "type":"base",
+          "duration":-1,
+          "amount":20
+        },{
+          "name":"Headband of alluring charisma",
+          "source":"headband",
+          "stat":"charisma",
+          "type":"enhancement",
+          "duration":-1,
+          "amount":2
+        }]
+      }
+    },{
+      "name":"fort",
+      "bonuses":[{
+        "name":"class base",
+        "source":"class base",
+        "stat":"fort",
+        "type":"base",
+        "duration":-1,
+        "amount":5
+      }],
+      "sum":{
+        "total":5,
+        "bonuses":[{
+          "name":"class base",
+          "source":"class base",
+          "stat":"fort",
+          "type":"base",
+          "duration":-1,
+          "amount":5
+        }]
+      }
+    },{
+      "name":"ref",
+      "bonuses":[{
+        "name":"class base",
+        "source":"class base",
+        "stat":"ref",
+        "type":"base",
+        "duration":-1,
+        "amount":5
+      }],
+      "sum":{
+        "total":5,
+        "bonuses":[{
+          "name":"class base",
+          "source":"class base",
+          "stat":"ref",
+          "type":"base",
+          "duration":-1,
+          "amount":5
+        }]
+      }
+    },{
+      "name":"will",
+      "bonuses":[{
+        "name":"class base",
+        "source":"class base",
+        "stat":"will",
+        "type":"base",
+        "duration":-1,
+        "amount":2
+      }],
+      "sum":{
+        "total":2,
+        "bonuses":[{
+          "name":"class base",
+          "source":"class base",
+          "stat":"will",
+          "type":"base",
+          "duration":-1,
+          "amount":2
+        }]
+      }
+    }
+  ],
+  "gear":[
+    {
+      "name":"dagger",
+      "damage":["1d3","1d4"],
+      "criticalRage":19,
+      "criticalMultiplier":2,
+      "material":"normal",
+      "masterwork":false,
+      "enhancement":0,
+      "enhancements":[]
+    },
+    {
+      "name":"punching dagger",
+      "damage":["1d3","1d4"],
+      "criticalRage":20,
+      "criticalMultiplier":3,
+      "material":"normal",
+      "masterwork":false,
+      "enhancement":0,
+      "enhancements":[]
+    },
+    {
+      "name":"Radiance",
+      "damage":["1d6","1d8"],
+      "criticalRage":19,
+      "criticalMultiplier":2,
+      "material":"unknown",
+      "masterwork":true,
+      "enhancement":2,
+      "enhancements":[]
+    }
+  ]
+
+
+  
+}

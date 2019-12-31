@@ -1,0 +1,18 @@
+.actionButtons{
+  background-color: violet;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: calc(88vh - 10px - 26vw);
+}
+.actionButtonWrapper{
+  width: 60vw;
+  height: 10vh;
+  background-color: aqua;
+  text-align: center;
+}
+.actionButton{
+  width: 55vw;
+  height: 9vh;
+}

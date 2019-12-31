@@ -1,0 +1,14 @@
+.centerDisplayPane{
+  display: flex;
+  flex-direction: column;
+  background-color: blue;
+  align-items: center;
+  width: 88vw;
+  min-height: calc(96vh - 10px);;
+}
+.charSelection{
+  background-color: yellow;
+  height: 8vh;
+  display: flex;
+  flex-direction: column;
+}
