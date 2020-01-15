@@ -93,7 +93,7 @@ class LeftDisplayPane extends React.Component {
               <div className="title" onClick={(e)=>this.togglePanel(e)}>
                 GEAR
               </div>
-              <div className="gearButtons">
+              <div className="gearButtons hidden">
                 {<ToggleSwitch slot="Head" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.head)}item={character.gear.wonderousItems.head}/>}
                 {<ToggleSwitch slot="Headband" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.headband)} item={character.gear.wonderousItems.headband}/>}
                 {<ToggleSwitch slot="Eyes" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.eyes)} item={character.gear.wonderousItems.eyes}/>}

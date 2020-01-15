@@ -1,7 +1,7 @@
 .leftDisplayPane{
   background-color: red;
   width: 6vw;
-  /* min-height: calc(96vh - 10px); */
+  min-height: calc(96vh - 10px);
   text-align: center;
 }
 
@@ -18,8 +18,8 @@
 }
 
 .leftDisplayPane .title{
-  /* width: 6vw; */
-  /* min-height: calc(96vh - 10px); */
+  width: 6vw;
+  min-height: calc(96vh - 10px);
 
   writing-mode: vertical-rl;
   text-align: center;
@@ -32,8 +32,8 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-content: space-around;
-  /* width: 90%; */
-  /* height: 97%; */
+  width: 90%;
+  height: 97%;
   margin: auto;
   background-color: azure;
 }
@@ -47,8 +47,8 @@
   justify-content: space-evenly;
 }
 .gearButton{
-  /* width: 95%; */
-  /* height: 95%; */
+  width: 95%;
+  height: 95%;
 }
 .hidden{
   display: none;
