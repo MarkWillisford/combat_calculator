@@ -14,6 +14,7 @@ class CharacterSelection extends Component {
       <div className="charSelection">
         Character:
         <select onChange={this.handleChange.bind(this)}>
+          <option value="-1">Select</option>
           <option value="Slick">Slick</option>
           <option value="Kah_Mei">Kah-Mei</option>
         </select>

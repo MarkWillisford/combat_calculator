@@ -18,7 +18,7 @@ class LowerDisplayPane extends React.Component {
   render(){
     return (
       <div className="lowerDisplayPane">
-        <div className>
+        <div>
 
         </div>
         <div className="title" onClick={(e)=>this.togglePanel(e)}>

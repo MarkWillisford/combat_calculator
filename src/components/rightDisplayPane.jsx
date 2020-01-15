@@ -18,7 +18,7 @@ class RightDisplayPanes extends React.Component {
   render(){
     return (
       <div className="rightDisplayPane">
-        <div className>
+        <div>
 
         </div>
         <div className="title" onClick={(e)=>this.togglePanel(e)}>

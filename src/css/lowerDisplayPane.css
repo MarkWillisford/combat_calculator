@@ -1,6 +1,7 @@
 .lowerDisplayPane{
   background-color: red;
-  width: 100vw;
+  /* width: 100vw; */
+  align-self: stretch;
   height: 6vw;
   text-align: center;
 }
@@ -11,12 +12,12 @@
   top: 0;
   left: 0;
   margin: 0;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
 }
 
 .lowerDisplayPane .title{
-  width: 100vw;
+  /* width: 100vw; */
   height: 6vw;
 
   text-align: center;

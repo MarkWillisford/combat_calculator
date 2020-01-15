@@ -242,38 +242,133 @@
       }
     }
   ],
-  "gear":[
-    {
-      "name":"dagger",
-      "damage":["1d3","1d4"],
-      "criticalRage":19,
-      "criticalMultiplier":2,
-      "material":"normal",
-      "masterwork":false,
-      "enhancement":0,
-      "enhancements":[]
+  "gear":{
+    "weapons":[    
+      {
+        "name":"dagger",
+        "weapon":"dagger",
+        "category":"light",
+        "damage":["1d3","1d4"],
+        "criticalRage":19,
+        "criticalMultiplier":2,
+        "material":"normal",
+        "masterwork":false,
+        "enhancement":0,
+        "enhancements":[]
+      },
+      {
+        "name":"punching dagger",
+        "weapon":"dagger",
+        "category":"light",
+        "damage":["1d3","1d4"],
+        "criticalRage":20,
+        "criticalMultiplier":3,
+        "material":"normal",
+        "masterwork":false,
+        "enhancement":0,
+        "enhancements":[]
+      },
+      {
+        "name":"Radiance",
+        "weapon":"longsword",
+        "category":"light",
+        "damage":["1d6","1d8"],
+        "criticalRage":19,
+        "criticalMultiplier":2,
+        "material":"unknown",
+        "masterwork":true,
+        "enhancement":2,
+        "enhancements":[]
+      }
+    ],
+    "armor":{
+      "name":"studdedleather"
     },
-    {
-      "name":"punching dagger",
-      "damage":["1d3","1d4"],
-      "criticalRage":20,
-      "criticalMultiplier":3,
-      "material":"normal",
-      "masterwork":false,
-      "enhancement":0,
-      "enhancements":[]
-    },
-    {
-      "name":"Radiance",
-      "damage":["1d6","1d8"],
-      "criticalRage":19,
-      "criticalMultiplier":2,
-      "material":"unknown",
-      "masterwork":true,
-      "enhancement":2,
-      "enhancements":[]
+    "shield":null,
+    "wonderousItems":{
+      "head":null,
+      "headband":null,
+      "eyes":null,
+      "shoulders":{
+        "name":"Cloak of Resistance",
+        "slot":"Shoulders",
+        "bonuses":[
+          {
+            "name":"Cloak of Resistance",
+            "stat":"fort",
+            "type":"resistance",
+            "duration":-1,
+            "amount":1
+          },
+          {
+            "name":"Cloak of Resistance",
+            "stat":"ref",
+            "type":"resistance",
+            "duration":-1,
+            "amount":1
+          },
+          {
+            "name":"Cloak of Resistance",
+            "stat":"will",
+            "type":"resistance",
+            "duration":-1,
+            "amount":1
+          }
+        ]
+      },
+      "neck":null,
+      "chest":null,
+      "body":null,
+      "belt":{
+        "name":"Belt of Incredible Dexterity",
+        "slot":"Belt",
+        "bonuses":[
+          {
+            "name":"Belt of Incredible Dexterity",
+            "stat":"dexterity",
+            "type":"enhancement",
+            "duration":-1,
+            "amount":2
+          }
+        ]
+      },
+      "wrists":null,
+      "hands":null,
+      "ring":[
+        {
+          "name":"Ring of Protection",
+          "slot":"Ring",
+          "bonuses":[
+            {
+              "name":"Ring of Protection",
+              "stat":"AC",
+              "type":"deflection",
+              "duration":-1,
+              "amount":1
+            }
+          ]
+        },{
+          "name":"Ring of Climbing",
+          "slot":"Ring",
+          "bonuses":[
+            {
+              "name":"Ring of Climbing",
+              "stat":"climb",
+              "type":"competence",
+              "duration":-1,
+              "amount":5
+            }
+          ]
+        }
+      ],
+      "feet":null
     }
-  ]
+  },
+  "feats":[
+    "Weapon Focus (longsword)", "Weapon Finesse","Two Weapon Fighting", "Combat Expertise", "Powerful Sneak",
+    "Power Attack", "Accomplished Sneak Attacker"
+  ],
+  "abilities":[]
 
 
   

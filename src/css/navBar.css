@@ -1,5 +1,5 @@
 .navBar{
-  width: calc(100% - 10px);
+  /* width: calc(100% - 10px); */
   height: 4vh;
   background-color: #dddddd;
   display: flex;

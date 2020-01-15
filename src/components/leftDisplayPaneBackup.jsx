@@ -22,6 +22,7 @@ class LeftDisplayPane extends React.Component {
   }
   closePanel(element){
     element.remove("expanded");
+
   }
   openPanel(element){
     element.add("expanded");
