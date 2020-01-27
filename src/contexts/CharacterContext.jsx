@@ -36,7 +36,6 @@ class CharacterContextProvider extends Component {
               // this.equipGear(this.state.character.gear.itemSlots[item][0]);
               console.log("you own too many of these");
             } else {
-              console.log(item);
               // add item to equiped slots
               newEquipedGear.push(this.state.character.gear.itemSlots[item]);
               // add bonus
@@ -79,14 +78,14 @@ class CharacterContextProvider extends Component {
     this.setState({ offHandAvailability: weapons });
   }
   equipGear = (item) => {
-    console.log("in equipGear");
-    console.log(item);
     for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
       this.addBonus(bonus);
     }
   }
   dequipGear = (item) => {
+    console.log("in dequipGear");
+    console.log(item);
     /***************************************/
     /* Adding removal and adding of gear. needs to draw data from owned gear in the char for name and availablity,
     /* Maybe the char needs a reorganization of data?
@@ -99,17 +98,13 @@ class CharacterContextProvider extends Component {
     let newEquipedGear = this.state.equipedGear;
     for(let i=0;i<newEquipedGear.length;i++){
       if(newEquipedGear[i] === item){
-        newEquipedGear = newEquipedGear.splice(i, 1);
-        return
+        //newEquipedGear = newEquipedGear.splice(i, 1);
+        newEquipedGear[i] = null;
       }
-      console.log("never got here");
     }
-
-    console.log(newEquipedGear);
   }
+  
   addBonus(bonus){
-    console.log("in addBonus");
-    console.log(bonus);
     let found = false;
     let foundAt = null;
 
@@ -121,21 +116,17 @@ class CharacterContextProvider extends Component {
     }
     // Not found so we need a new stat created
     if(!found){
-      console.log("not found");
-      console.log(bonus);
       // create the new "stat" object
       let newStat = createStat({
         name:bonus.stat,
         bonuses:[bonus]
       })
       newStat.sum = setSum(newStat);
-      console.log(newStat);
       let characterStats = this.state.character.characterStats;
       characterStats.push(newStat);
       
       // adding a new stat
-      this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
-
+      this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));      
     } else { 
       // We found it, add the bonus to the correct bonuses array
       let bonusesArray = this.state.character.characterStats[foundAt].bonuses;
@@ -172,6 +163,8 @@ class CharacterContextProvider extends Component {
     this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
   }
   removeBonus(bonus){
+    console.log("in removeBonus");
+    console.log(bonus);
     let statFoundAt = 0;
     
     for(let i=0;i<this.state.character.characterStats.length;i++){
@@ -188,7 +181,8 @@ class CharacterContextProvider extends Component {
     let sum = setSum(this.state.character.characterStats[statFoundAt]);
     characterStats[statFoundAt].sum = sum;
     
-    this.setState({ ...this.state.character, characterStats:characterStats});
+    //this.setState({ ...this.state.character, characterStats:characterStats});
+    this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
   }
 
   // Applying and removing Buffs

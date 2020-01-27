@@ -79,6 +79,7 @@ class LeftDisplayPane extends React.Component {
     if(e.target.checked){
       equipGear(item);
     } else {
+      console.log("removing gear");
       dequipGear(item);
     }
   }
