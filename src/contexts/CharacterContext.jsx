@@ -30,17 +30,22 @@ class CharacterContextProvider extends Component {
     this.setState({ character: selectedCharacter }, () => {
       let newEquipedGear = [];
       Object.keys(this.state.character.gear.itemSlots).forEach((item) => {
-        if(this.state.character.gear.itemSlots[item]){  
+        if(this.state.character.gear.itemSlots[item]){
           if(item !== "ring"){
-            // add item to equiped slots
-            newEquipedGear.push(this.state.character.gear.itemSlots[item]);
-            // add bonus
-            console.log(this.state.character.gear.itemSlots[item]);
+            if(Array.isArray(this.state.character.gear.itemSlots[item])){
+              // this.equipGear(this.state.character.gear.itemSlots[item][0]);
+              console.log("you own too many of these");
+            } else {
+              console.log(item);
+              // add item to equiped slots
+              newEquipedGear.push(this.state.character.gear.itemSlots[item]);
+              // add bonus
+              this.equipGear(this.state.character.gear.itemSlots[item]);
+            }
           } else {
             for(let j=0;j<2;j++){
               newEquipedGear.push(this.state.character.gear.itemSlots[item][j]);
               // add bonus
-              console.log(this.state.character.gear.itemSlots[item][j]);
               this.equipGear(this.state.character.gear.itemSlots[item][j]);
             }
           }
@@ -74,6 +79,8 @@ class CharacterContextProvider extends Component {
     this.setState({ offHandAvailability: weapons });
   }
   equipGear = (item) => {
+    console.log("in equipGear");
+    console.log(item);
     for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
       this.addBonus(bonus);
@@ -101,6 +108,8 @@ class CharacterContextProvider extends Component {
     console.log(newEquipedGear);
   }
   addBonus(bonus){
+    console.log("in addBonus");
+    console.log(bonus);
     let found = false;
     let foundAt = null;
 
@@ -112,17 +121,21 @@ class CharacterContextProvider extends Component {
     }
     // Not found so we need a new stat created
     if(!found){
+      console.log("not found");
+      console.log(bonus);
+      // create the new "stat" object
+      let newStat = createStat({
+        name:bonus.stat,
+        bonuses:[bonus]
+      })
+      newStat.sum = setSum(newStat);
+      console.log(newStat);
+      let characterStats = this.state.character.characterStats;
+      characterStats.push(newStat);
+      
       // adding a new stat
-      this.setState(prevState => ({
-        character:{
-          ...prevState.character, characterStats:[
-            ...prevState.character.characterStats, createStat({
-              name:bonus.name,
-              bonuses:[bonus]
-            })
-          ]
-        }
-      }))
+      this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
+
     } else { 
       // We found it, add the bonus to the correct bonuses array
       let bonusesArray = this.state.character.characterStats[foundAt].bonuses;
@@ -137,6 +150,26 @@ class CharacterContextProvider extends Component {
       
       this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
     }
+  }
+  callSum(bonus){
+    let found = false;
+    let foundAt = null;
+
+    for(let i=0;i<this.state.character.characterStats.length;i++){
+      if(this.state.character.characterStats[i].name === bonus.stat){
+        found = true;
+        foundAt = i;
+      }
+    }
+
+    let bonusesArray = this.state.character.characterStats[foundAt].bonuses;    
+    let characterStats = this.state.character.characterStats;
+    characterStats[foundAt].bonuses = bonusesArray;
+
+    let sum = setSum(this.state.character.characterStats[foundAt]);
+    characterStats[foundAt].sum = sum;
+    
+    this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
   }
   removeBonus(bonus){
     let statFoundAt = 0;

@@ -53,16 +53,9 @@
         "type":"base",
         "duration":-1,
         "amount":20
-      },{
-        "name":"Belt of incredible dexterity",
-        "source":"Belt",
-        "stat":"dexterity",
-        "type":"enhancement",
-        "duration":-1,
-        "amount":2
       }],
       "sum":{
-        "total":22,
+        "total":20,
         "bonuses":[{
           "name":"character base",
           "source":"character base",
@@ -70,13 +63,6 @@
           "type":"base",
           "duration":-1,
           "amount":20
-        },{
-          "name":"Belt of incredible dexterity",
-          "source":"Belt",
-          "stat":"dexterity",
-          "type":"enhancement",
-          "duration":-1,
-          "amount":2
         }]
       }
     },{
@@ -351,7 +337,7 @@
           "bonuses":[
             {
               "name":"Ring of Protection",
-              "stat":"AC",
+              "stat":"armorClass",
               "type":"deflection",
               "duration":-1,
               "amount":1

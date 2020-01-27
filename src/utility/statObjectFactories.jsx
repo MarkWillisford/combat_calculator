@@ -66,7 +66,7 @@ export const setSum = (stat) => {
   return sum;
 }
 
-export const createStat = ({ name, bonuses, sum = { } }) => ({
+export const createStat = ({ name, bonuses, sum = {  } }) => ({
 	name, bonuses, sum, 
 	// to get sum:
 	// sum is an object with the highest of each bonus type in it. 
@@ -75,6 +75,7 @@ export const createStat = ({ name, bonuses, sum = { } }) => ({
 		// bonus type in it, saving the total.
 	// so 'sum' is actually an object with a number and an array
 	setSum(){
+    console.log("in setSum");
 		let total = 0;
 		let arrayOfHighestBonuses = [ ];
 		for(let i=0; i<this.bonuses.length; i++){
@@ -83,7 +84,8 @@ export const createStat = ({ name, bonuses, sum = { } }) => ({
 			// **************  This is all if normal non-stacking bonuses are used *********
 			// ****  If the bonus is dodge or untyped then we need to skip part of this ****
 
-			if(typeToFind !== 'dodge' && typeToFind !== 'untyped'){			
+			if(typeToFind !== 'dodge' && typeToFind !== 'untyped'){		
+        console.log("in setSum, not stackable");	
 				let found = false;
 				let replace = false;
 				let foundAt = null;
@@ -114,6 +116,7 @@ export const createStat = ({ name, bonuses, sum = { } }) => ({
 					total = total + this.bonuses[i].amount;
 				};
 			} else { 
+        console.log("in setSum, stackable");	
 				// this means that the type is dodge or untyped
 				let found = false;
 				// checking array of highest bonuses
