@@ -281,11 +281,7 @@
         "enhancements":[]
       }
     ],
-    "armor":{
-      "name":"studdedleather"
-    },
-    "shield":null,
-    "wonderousItems":{
+    "itemSlots":{
       "head":null,
       "headband":null,
       "eyes":null,
@@ -319,6 +315,19 @@
       "neck":null,
       "chest":null,
       "body":null,
+      "armor":{
+        "name":"Studded Leather",
+        "slot":"Armor",
+        "bonuses":[
+          {
+            "name":"Studded Leather",
+            "stat":"armorClass",
+            "type":"armor",
+            "duration":-1,
+            "amount":3
+          }
+        ]
+      },
       "belt":{
         "name":"Belt of Incredible Dexterity",
         "slot":"Belt",
@@ -334,6 +343,7 @@
       },
       "wrists":null,
       "hands":null,
+      "shield":null,
       "ring":[
         {
           "name":"Ring of Protection",

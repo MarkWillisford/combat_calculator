@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ToggleSwitch(props){  
+function ToggleSwitch(props){
   return ( 
     <div className="gearButtonDiv" id={props.slot}>
       <div>{!props.item ? props.slot : ""}</div>
@@ -9,7 +9,7 @@ function ToggleSwitch(props){
       }</div>
       <div className="el-checkbox el-checkbox-lg">
         <label className="el-switch">
-          <input type="checkbox" name="switch" onClick={props.cb} disabled={props.item ? false : true} item={props.item}></input>
+          <input type="checkbox" name="switch" onClick={props.cb} disabled={props.item ? false : true} item={props.item} checked={props.item ? true : false}></input>
           <span className="el-switch-style"></span>
         </label>
       </div>

@@ -17,14 +17,15 @@ class LeftDisplayPane extends React.Component {
   static contextType = CharacterContext;
 
   togglePanel(e){
-    console.log("toggling");
-    (e.target.parentNode.classList.contains("expanded") ? this.closePanel(e.target.parentNode.classList) : this.openPanel(e.target.parentNode.classList))    
+    (e.target.parentNode.classList.contains("expanded") ? this.closePanel(e.target.parentNode) : this.openPanel(e.target.parentNode))    
   }
   closePanel(element){
-    element.remove("expanded");
+    element.classList.remove("expanded");
+    element.lastChild.classList.add("hidden");
   }
   openPanel(element){
-    element.add("expanded");
+    element.classList.add("expanded");
+    element.lastChild.classList.remove("hidden");
   }
 
 
@@ -70,45 +71,53 @@ class LeftDisplayPane extends React.Component {
   }
   toggleSwitch(e, item){
     const { equipGear, dequipGear } = this.context;
-    let bonuses = item.bonuses;
-    
+    /*******************/
+    /* Here I am going to pass the item back and if checked = true then add the buff, 
+    /* if false, then remove it.
+    /*******************/
+
     if(e.target.checked){
       equipGear(item);
     } else {
       dequipGear(item);
     }
-    /*******************/
-    /* Here I am going to pass the item back and if checked = true then add the buff, 
-    /* if false, then remove it.
-    /*******************/
   }
 
   render(){
     return (
       <CharacterContext.Consumer>{(context) => {
-        const { character, mainHandAvailability, offHandAvailability } = context;
-        if(character.name !== "unknown"){
+        const { character, mainHandAvailability, offHandAvailability, equipedGear } = context;
+        const slots = ["Head", "Headband", "Eyes", "Shoulders", "Neck", "Chest", "Body", 
+          "Armor", "Belt", "Wrists", "Hands", "Shield", "Ring1", "Ring2", "Feet"];
+        let equipedGearArray = [];
+        if(character.name !== "unknown"){ 
+          equipedGearArray = equipedGear;
+        }
+
           return(
             <div className="leftDisplayPane">
               <div className="title" onClick={(e)=>this.togglePanel(e)}>
                 GEAR
               </div>
               <div className="gearButtons hidden">
-                {<ToggleSwitch slot="Head" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.head)}item={character.gear.wonderousItems.head}/>}
-                {<ToggleSwitch slot="Headband" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.headband)} item={character.gear.wonderousItems.headband}/>}
-                {<ToggleSwitch slot="Eyes" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.eyes)} item={character.gear.wonderousItems.eyes}/>}
-                {<ToggleSwitch slot="Shoulders" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.shoulders)} item={character.gear.wonderousItems.shoulders}/>}
-                {<ToggleSwitch slot="Neck" cb={(e)=>this.toggleSwitch(e)} item={character.gear.wonderousItems.neck}/>}
-                {<ToggleSwitch slot="Chest" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.chest)} item={character.gear.wonderousItems.chest}/>}
-                {<ToggleSwitch slot="Body" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.body)} item={character.gear.wonderousItems.body}/>}
+                {/* {<ToggleSwitch slot="Head" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.head)}item={character.gear.itemSlots.head}/>}
+                {<ToggleSwitch slot="Headband" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.headband)} item={character.gear.itemSlots.headband}/>}
+                {<ToggleSwitch slot="Eyes" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.eyes)} item={character.gear.itemSlots.eyes}/>}
+                {<ToggleSwitch slot="Shoulders" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.shoulders)} item={character.gear.itemSlots.shoulders}/>}
+                {<ToggleSwitch slot="Neck" cb={(e)=>this.toggleSwitch(e)} item={character.gear.itemSlots.neck}/>}
+                {<ToggleSwitch slot="Chest" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.chest)} item={character.gear.itemSlots.chest}/>}
+                {<ToggleSwitch slot="Body" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.body)} item={character.gear.itemSlots.body}/>}
                 {<ToggleSwitch slot="Armor" cb={(e)=>this.toggleSwitch(e)} item={null}/>}
-                {<ToggleSwitch slot="Belt" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.belt)} item={character.gear.wonderousItems.belt}/>}
-                {<ToggleSwitch slot="Wrists" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.wrists)} item={character.gear.wonderousItems.wrists}/>}
-                {<ToggleSwitch slot="Hands" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.hands)} item={character.gear.wonderousItems.hands}/>}
+                {<ToggleSwitch slot="Belt" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.belt)} item={character.gear.itemSlots.belt}/>}
+                {<ToggleSwitch slot="Wrists" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.wrists)} item={character.gear.itemSlots.wrists}/>}
+                {<ToggleSwitch slot="Hands" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.hands)} item={character.gear.itemSlots.hands}/>}
                 {<ToggleSwitch slot="Shield" cb={(e)=>this.toggleSwitch(e)} item={null}/>}
-                {<ToggleSwitch slot="Ring1" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.ring[0])} item={character.gear.wonderousItems.ring[0]}/>}
-                {<ToggleSwitch slot="Ring2" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.ring[1])} item={character.gear.wonderousItems.ring[1]}/>}
-                {<ToggleSwitch slot="Feet" cb={(e)=>this.toggleSwitch(e, character.gear.wonderousItems.feet)} item={character.gear.wonderousItems.feet}/>}
+                {<ToggleSwitch slot="Ring1" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.ring[0])} item={character.gear.itemSlots.ring[0]}/>}
+                {<ToggleSwitch slot="Ring2" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.ring[1])} item={character.gear.itemSlots.ring[1]}/>}
+                {<ToggleSwitch slot="Feet" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.feet)} item={character.gear.itemSlots.feet}/>}
+                */}
+                { slots.map((s, index) => (<ToggleSwitch key={index} slot={s} cb={(e)=>this.toggleSwitch(e, equipedGearArray[index])} 
+                  item={equipedGearArray[index]}/>)) }
                 <div className="gearButtonDiv" id="mainHand">
                   Main Hand
                   <select onChange={this.handleMainWeaponChange.bind(this)}>
@@ -126,16 +135,15 @@ class LeftDisplayPane extends React.Component {
               </div>
             </div>
           )
-        } else {
+       /*  } else {
           return(            
             <div className="leftDisplayPane">
               <div className="title" onClick={(e)=>this.togglePanel(e)}>
                 GEAR
-              </div>
-              <div className="gearButtons"> </div>            
+              </div>       
             </div>
           )
-        }
+        } */
       }}</CharacterContext.Consumer>
     );
   }

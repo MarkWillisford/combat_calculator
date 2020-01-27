@@ -17,38 +17,43 @@ class CharacterContextProvider extends Component {
   }
 
   selectCharacter = (charName) => {
-    let character;
+    let selectedCharacter;
 
     if(charName === "Slick"){
-      character = require('../data/slick.json');
+      selectedCharacter = require('../data/slick.json');
     } else if(charName === "Kah_Mei"){
-      character = require('../data/kah_mei.json');
+      selectedCharacter = require('../data/kah_mei.json');
     } else {
-      character = "unknown";
+      selectedCharacter = "unknown";
     }
-    let newEquipedGear = [];
-    Object.keys(character.gear.wonderousItems).forEach((item) => {
-      if(character.gear.wonderousItems[item]){  
-        if(item !== "ring"){
-          newEquipedGear.push(character.gear.wonderousItems[item]);
-        } else {
-          for(let j=0;j<2;j++){
-            newEquipedGear.push(character.gear.wonderousItems[item][j]);
+
+    this.setState({ character: selectedCharacter }, () => {
+      let newEquipedGear = [];
+      Object.keys(this.state.character.gear.itemSlots).forEach((item) => {
+        if(this.state.character.gear.itemSlots[item]){  
+          if(item !== "ring"){
+            // add item to equiped slots
+            newEquipedGear.push(this.state.character.gear.itemSlots[item]);
+            // add bonus
+            console.log(this.state.character.gear.itemSlots[item]);
+          } else {
+            for(let j=0;j<2;j++){
+              newEquipedGear.push(this.state.character.gear.itemSlots[item][j]);
+              // add bonus
+              console.log(this.state.character.gear.itemSlots[item][j]);
+              this.equipGear(this.state.character.gear.itemSlots[item][j]);
+            }
           }
+        } else {
+          newEquipedGear.push(this.state.character.gear.itemSlots[item]);
         }
-      } else {
-        newEquipedGear.push(character.gear.wonderousItems[item]);
-      }
-    })
-    newEquipedGear.splice(7, 0, character.gear.armor);
-    newEquipedGear.splice(11, 0, (character.gear.shield));
+      })
 
-    this.setState({ character: character });
-    this.setState({ mainHandAvailability: character.gear.weapons});
-    this.setState({ offHandAvailability: character.gear.weapons});
+      this.setState({ equipedGear: newEquipedGear });
+    });
 
-    console.log(newEquipedGear);
-    this.setState({ equipedGear: newEquipedGear });
+    this.setState({ mainHandAvailability: selectedCharacter.gear.weapons});
+    this.setState({ offHandAvailability: selectedCharacter.gear.weapons});
   }
 
   setAttack = (text) => {
@@ -75,10 +80,25 @@ class CharacterContextProvider extends Component {
     }
   }
   dequipGear = (item) => {
+    /***************************************/
+    /* Adding removal and adding of gear. needs to draw data from owned gear in the char for name and availablity,
+    /* Maybe the char needs a reorganization of data?
+    /***************************************/
     for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
       this.removeBonus(bonus);
     }
+    
+    let newEquipedGear = this.state.equipedGear;
+    for(let i=0;i<newEquipedGear.length;i++){
+      if(newEquipedGear[i] === item){
+        newEquipedGear = newEquipedGear.splice(i, 1);
+        return
+      }
+      console.log("never got here");
+    }
+
+    console.log(newEquipedGear);
   }
   addBonus(bonus){
     let found = false;
@@ -115,7 +135,7 @@ class CharacterContextProvider extends Component {
       let sum = setSum(this.state.character.characterStats[foundAt]);
       characterStats[foundAt].sum = sum;
       
-      this.setState({ ...this.state.character, characterStats:characterStats});
+      this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
     }
   }
   removeBonus(bonus){
@@ -144,10 +164,15 @@ class CharacterContextProvider extends Component {
   
   render() { 
     return ( 
-      <CharacterContext.Provider value={{...this.state, selectCharacter: this.selectCharacter, 
-        setAttack:this.setAttack, setFullAttack:this.setFullAttack, setChargeAttack:this.setChargeAttack,
-        setMainHandAvailability:this.setMainHandAvailability, setOffHandAvailability:this.setOffHandAvailability,
-        equipedGear:this.equipedGear, equipGear:this.equipGear, dequipGear:this.dequipGear        
+      <CharacterContext.Provider value={{...this.state, 
+        selectCharacter: this.selectCharacter, 
+        setAttack:this.setAttack, 
+        setFullAttack:this.setFullAttack, 
+        setChargeAttack:this.setChargeAttack,
+        setMainHandAvailability:this.setMainHandAvailability, 
+        setOffHandAvailability:this.setOffHandAvailability,
+        equipGear:this.equipGear, 
+        dequipGear:this.dequipGear        
       }}>
         {this.props.children}
       </CharacterContext.Provider>
