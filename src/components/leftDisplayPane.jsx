@@ -77,9 +77,9 @@ class LeftDisplayPane extends React.Component {
     /*******************/
 
     if(e.target.checked){
+      console.log("adding gear");
       equipGear(item);
     } else {
-      console.log("removing gear");
       dequipGear(item);
     }
   }
@@ -94,6 +94,8 @@ class LeftDisplayPane extends React.Component {
         if(character.name !== "unknown"){ 
           equipedGearArray = equipedGear;
         }
+        console.log(character.gear);
+        const gearlist = character.gear;
 
           return(
             <div className="leftDisplayPane">
@@ -118,7 +120,7 @@ class LeftDisplayPane extends React.Component {
                 {<ToggleSwitch slot="Feet" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.feet)} item={character.gear.itemSlots.feet}/>}
                 */}
                 { slots.map((s, index) => (<ToggleSwitch key={index} slot={s} cb={(e)=>this.toggleSwitch(e, equipedGearArray[index])} 
-                  item={equipedGearArray[index]}/>)) }
+                  item={equipedGearArray[index]} owned={gearlist}/>)) }
                 <div className="gearButtonDiv" id="mainHand">
                   Main Hand
                   <select onChange={this.handleMainWeaponChange.bind(this)}>

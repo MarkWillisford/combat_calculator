@@ -78,17 +78,20 @@ class CharacterContextProvider extends Component {
     this.setState({ offHandAvailability: weapons });
   }
   equipGear = (item) => {
-    for(let i=0;i<item.bonuses.length;i++){
+    console.log("in equipGear");
+    console.log(item);
+
+    /* for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
       this.addBonus(bonus);
-    }
+    } */
   }
   dequipGear = (item) => {
     console.log("in dequipGear");
     console.log(item);
     /***************************************/
     /* Adding removal and adding of gear. needs to draw data from owned gear in the char for name and availablity,
-    /* Maybe the char needs a reorganization of data?
+    /* Maybe the char needs a reorganization of data? 
     /***************************************/
     for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
@@ -98,12 +101,11 @@ class CharacterContextProvider extends Component {
     let newEquipedGear = this.state.equipedGear;
     for(let i=0;i<newEquipedGear.length;i++){
       if(newEquipedGear[i] === item){
-        //newEquipedGear = newEquipedGear.splice(i, 1);
         newEquipedGear[i] = null;
       }
     }
   }
-  
+
   addBonus(bonus){
     let found = false;
     let foundAt = null;
