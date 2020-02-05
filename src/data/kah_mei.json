@@ -271,7 +271,7 @@
       "head":null,
       "headband":null,
       "eyes":null,
-      "shoulders":{
+      "shoulders":[{
         "name":"Cloak of Resistance",
         "slot":"Shoulders",
         "bonuses":[
@@ -297,11 +297,11 @@
             "amount":1
           }
         ]
-      },
+      }],
       "neck":null,
       "chest":null,
       "body":null,
-      "armor":{
+      "armor":[{
         "name":"Studded Leather",
         "slot":"Armor",
         "bonuses":[
@@ -313,8 +313,8 @@
             "amount":3
           }
         ]
-      },
-      "belt":{
+      }],
+      "belt":[{
         "name":"Belt of Incredible Dexterity",
         "slot":"Belt",
         "bonuses":[
@@ -326,7 +326,7 @@
             "amount":2
           }
         ]
-      },
+      }],
       "wrists":null,
       "hands":null,
       "shield":null,

@@ -69,7 +69,7 @@ class LeftDisplayPane extends React.Component {
 
     setMainHandAvailability(mainHandArray3);
   }
-  toggleSwitch(e, item){
+  toggleSwitch(e, item, index){
     const { equipGear, dequipGear } = this.context;
     /*******************/
     /* Here I am going to pass the item back and if checked = true then add the buff, 
@@ -77,76 +77,51 @@ class LeftDisplayPane extends React.Component {
     /*******************/
 
     if(e.target.checked){
-      console.log("adding gear");
-      equipGear(item);
+      equipGear(item, index);
     } else {
-      dequipGear(item);
+      dequipGear(item, index);
     }
   }
 
   render(){
     return (
       <CharacterContext.Consumer>{(context) => {
-        const { character, mainHandAvailability, offHandAvailability, equipedGear } = context;
+        /* var has = require('has');
+        var RequireObjectCoercible = require('es-abstract/2019/RequireObjectCoercible');
+        var callBound = require('es-abstract/helpers/callBound');
+        
+        var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable'); */
+
+
+        const { mainHandAvailability, offHandAvailability, equipedGear, activeGear } = context;
         const slots = ["Head", "Headband", "Eyes", "Shoulders", "Neck", "Chest", "Body", 
           "Armor", "Belt", "Wrists", "Hands", "Shield", "Ring1", "Ring2", "Feet"];
-        let equipedGearArray = [];
-        if(character.name !== "unknown"){ 
-          equipedGearArray = equipedGear;
-        }
-        console.log(character.gear);
-        const gearlist = character.gear;
 
-          return(
-            <div className="leftDisplayPane">
-              <div className="title" onClick={(e)=>this.togglePanel(e)}>
-                GEAR
+        return(
+          <div className="leftDisplayPane">
+            <div className="title" onClick={(e)=>this.togglePanel(e)}>
+              GEAR
+            </div>
+            <div className="gearButtons hidden">
+              { slots.map((s, index) => (<ToggleSwitch key={index} slot={s} cb={(e)=>this.toggleSwitch(e, equipedGear[index], index)} 
+                item={equipedGear[index]} /* owned={gearlist} */ active={activeGear[index]}/>)) }
+              <div className="gearButtonDiv" id="mainHand">
+                Main Hand
+                <select onChange={this.handleMainWeaponChange.bind(this)}>
+                  <option value="-1">Select</option>
+                  { mainHandAvailability.map((w) => <option key={w.name} value={w.name}>{w.name}</option>) }) }
+                </select>
               </div>
-              <div className="gearButtons hidden">
-                {/* {<ToggleSwitch slot="Head" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.head)}item={character.gear.itemSlots.head}/>}
-                {<ToggleSwitch slot="Headband" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.headband)} item={character.gear.itemSlots.headband}/>}
-                {<ToggleSwitch slot="Eyes" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.eyes)} item={character.gear.itemSlots.eyes}/>}
-                {<ToggleSwitch slot="Shoulders" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.shoulders)} item={character.gear.itemSlots.shoulders}/>}
-                {<ToggleSwitch slot="Neck" cb={(e)=>this.toggleSwitch(e)} item={character.gear.itemSlots.neck}/>}
-                {<ToggleSwitch slot="Chest" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.chest)} item={character.gear.itemSlots.chest}/>}
-                {<ToggleSwitch slot="Body" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.body)} item={character.gear.itemSlots.body}/>}
-                {<ToggleSwitch slot="Armor" cb={(e)=>this.toggleSwitch(e)} item={null}/>}
-                {<ToggleSwitch slot="Belt" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.belt)} item={character.gear.itemSlots.belt}/>}
-                {<ToggleSwitch slot="Wrists" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.wrists)} item={character.gear.itemSlots.wrists}/>}
-                {<ToggleSwitch slot="Hands" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.hands)} item={character.gear.itemSlots.hands}/>}
-                {<ToggleSwitch slot="Shield" cb={(e)=>this.toggleSwitch(e)} item={null}/>}
-                {<ToggleSwitch slot="Ring1" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.ring[0])} item={character.gear.itemSlots.ring[0]}/>}
-                {<ToggleSwitch slot="Ring2" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.ring[1])} item={character.gear.itemSlots.ring[1]}/>}
-                {<ToggleSwitch slot="Feet" cb={(e)=>this.toggleSwitch(e, character.gear.itemSlots.feet)} item={character.gear.itemSlots.feet}/>}
-                */}
-                { slots.map((s, index) => (<ToggleSwitch key={index} slot={s} cb={(e)=>this.toggleSwitch(e, equipedGearArray[index])} 
-                  item={equipedGearArray[index]} owned={gearlist}/>)) }
-                <div className="gearButtonDiv" id="mainHand">
-                  Main Hand
-                  <select onChange={this.handleMainWeaponChange.bind(this)}>
-                    <option value="-1">Select</option>
-                    { mainHandAvailability.map((w) => <option key={w.name} value={w.name}>{w.name}</option>) }) }
-                  </select>
-                </div>
-                <div className="gearButtonDiv" id="offHand">
-                  Off Hand
-                  <select onChange={this.handleOffWeaponChange.bind(this)}>
-                    <option value="-1">Select</option>
-                    { offHandAvailability.map((w) => <option key={w.name} value={w.name}>{w.name}</option>) }) }
-                  </select>
-                </div>
+              <div className="gearButtonDiv" id="offHand">
+                Off Hand
+                <select onChange={this.handleOffWeaponChange.bind(this)}>
+                  <option value="-1">Select</option>
+                  { offHandAvailability.map((w) => <option key={w.name} value={w.name}>{w.name}</option>) }) }
+                </select>
               </div>
             </div>
-          )
-       /*  } else {
-          return(            
-            <div className="leftDisplayPane">
-              <div className="title" onClick={(e)=>this.togglePanel(e)}>
-                GEAR
-              </div>       
-            </div>
-          )
-        } */
+          </div>
+        )
       }}</CharacterContext.Consumer>
     );
   }

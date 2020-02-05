@@ -1,5 +1,6 @@
 import React, { createContext, Component } from 'react';
 import { createBonus, setSum, createStat } from '../utility/statObjectFactories'
+import { findGearSlotIndex } from '../utility/helperFunctions';
 
 export const CharacterContext = createContext();
 
@@ -13,7 +14,10 @@ class CharacterContextProvider extends Component {
     chargeText:"charge",
     mainHandAvailability:[],
     offHandAvailability:[],
-    equipedGear:[]
+    equipedGear:[],
+    activeGear:[null, null, null, null, null,
+                null, null, null, null, null,
+                null, null, null, null, null]
   }
 
   selectCharacter = (charName) => {
@@ -25,17 +29,23 @@ class CharacterContextProvider extends Component {
       selectedCharacter = require('../data/kah_mei.json');
     } else {
       selectedCharacter = "unknown";
+      // use a return to get out early
+      return;
     }
 
     this.setState({ character: selectedCharacter }, () => {
+      // We will use the character as the owned gear array
+      // We now add the first item in each slot to the equipped gear list
+      // TODO Add a original state to set back to upon switching to unknown char
       let newEquipedGear = [];
       Object.keys(this.state.character.gear.itemSlots).forEach((item) => {
         if(this.state.character.gear.itemSlots[item]){
           if(item !== "ring"){
             if(Array.isArray(this.state.character.gear.itemSlots[item])){
-              // this.equipGear(this.state.character.gear.itemSlots[item][0]);
-              console.log("you own too many of these");
+              this.equipGear(this.state.character.gear.itemSlots[item][0], findGearSlotIndex(item));
+              newEquipedGear.push(this.state.character.gear.itemSlots[item][0]);
             } else {
+              console.log("should never get here");
               // add item to equiped slots
               newEquipedGear.push(this.state.character.gear.itemSlots[item]);
               // add bonus
@@ -45,7 +55,8 @@ class CharacterContextProvider extends Component {
             for(let j=0;j<2;j++){
               newEquipedGear.push(this.state.character.gear.itemSlots[item][j]);
               // add bonus
-              this.equipGear(this.state.character.gear.itemSlots[item][j]);
+              let ringNum = j+1;
+              this.equipGear(this.state.character.gear.itemSlots[item][j], findGearSlotIndex(item+ringNum));
             }
           }
         } else {
@@ -77,35 +88,43 @@ class CharacterContextProvider extends Component {
   setOffHandAvailability = (weapons) => {
     this.setState({ offHandAvailability: weapons });
   }
-  equipGear = (item) => {
-    console.log("in equipGear");
-    console.log(item);
+  equipGear = (item, index = null) => {
+    // Get out if this is a null item
+    if(item === null){
+      return;
+    }
 
-    /* for(let i=0;i<item.bonuses.length;i++){
+    // Add the bonus
+    for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
       this.addBonus(bonus);
-    } */
+    }
+
+    this.activateGear(item, index);
   }
-  dequipGear = (item) => {
-    console.log("in dequipGear");
-    console.log(item);
-    /***************************************/
-    /* Adding removal and adding of gear. needs to draw data from owned gear in the char for name and availablity,
-    /* Maybe the char needs a reorganization of data? 
-    /***************************************/
+  dequipGear = (item, index) => {
     for(let i=0;i<item.bonuses.length;i++){
       let bonus = createBonus({...item.bonuses[i], source:item.slot});
       this.removeBonus(bonus);
     }
     
-    let newEquipedGear = this.state.equipedGear;
-    for(let i=0;i<newEquipedGear.length;i++){
-      if(newEquipedGear[i] === item){
-        newEquipedGear[i] = null;
-      }
-    }
+    this.deactivateGear(index);
   }
 
+  // Activate
+  activateGear = (item, index) => {
+    // add the item to the active array
+    let newActiveGear = this.state.activeGear;
+    newActiveGear[index] = item;
+    this.setState({ activeGear: newActiveGear });
+  }
+  // Deactivate
+  deactivateGear = (index) => {
+    let newActiveGear = this.state.activeGear;
+    newActiveGear[index] = null;
+    this.setState({ activeGear: newActiveGear });
+  }
+  
   addBonus(bonus){
     let found = false;
     let foundAt = null;
@@ -165,8 +184,6 @@ class CharacterContextProvider extends Component {
     this.setState(prevState => ({ character:{...prevState.character, characterStats:characterStats }}));
   }
   removeBonus(bonus){
-    console.log("in removeBonus");
-    console.log(bonus);
     let statFoundAt = 0;
     
     for(let i=0;i<this.state.character.characterStats.length;i++){
