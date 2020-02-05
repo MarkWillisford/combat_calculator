@@ -3,7 +3,6 @@ import '../css/leftDisplayPane.css';
 import '../css/checkbox.css';
 import { CharacterContext } from '../contexts/CharacterContext';
 import ToggleSwitch from './toggleSwitch';
-import { createBonus } from '../utility/statObjectFactories'
 
 class LeftDisplayPane extends React.Component {
   constructor(props){

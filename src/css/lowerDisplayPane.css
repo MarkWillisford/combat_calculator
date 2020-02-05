@@ -17,9 +17,12 @@
 }
 
 .lowerDisplayPane .title{
-  /* width: 100vw; */
+  width: 88vw;
   height: 6vw;
 
   text-align: center;
   background-color: purple;
+}
+.lowerDisplayPane .wide{
+  width: 100vw;
 }

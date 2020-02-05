@@ -18,7 +18,8 @@ class CharacterContextProvider extends Component {
     activeGear:[null, null, null, null, null,
                 null, null, null, null, null,
                 null, null, null, null, null,
-                null, null]
+                null, null],
+    options:["fightingDefensively", "totalDefense"]
   }
 
   selectCharacter = (charName) => {
@@ -118,15 +119,12 @@ class CharacterContextProvider extends Component {
     
     this.deactivateGear(index);
   }
-
-  // Activate
   activateGear = (item, index) => {
     // add the item to the active array
     let newActiveGear = this.state.activeGear;
     newActiveGear[index] = item;
     this.setState({ activeGear: newActiveGear });
   }
-  // Deactivate
   deactivateGear = (index) => {
     let newActiveGear = this.state.activeGear;
     newActiveGear[index] = null;
@@ -226,7 +224,7 @@ class CharacterContextProvider extends Component {
         setMainHandAvailability:this.setMainHandAvailability, 
         setOffHandAvailability:this.setOffHandAvailability,
         equipGear:this.equipGear, 
-        dequipGear:this.dequipGear        
+        dequipGear:this.dequipGear
       }}>
         {this.props.children}
       </CharacterContext.Provider>
