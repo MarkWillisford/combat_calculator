@@ -17,7 +17,8 @@ class CharacterContextProvider extends Component {
     equipedGear:[],
     activeGear:[null, null, null, null, null,
                 null, null, null, null, null,
-                null, null, null, null, null]
+                null, null, null, null, null,
+                null, null]
   }
 
   selectCharacter = (charName) => {
@@ -94,18 +95,25 @@ class CharacterContextProvider extends Component {
       return;
     }
 
-    // Add the bonus
-    for(let i=0;i<item.bonuses.length;i++){
-      let bonus = createBonus({...item.bonuses[i], source:item.slot});
-      this.addBonus(bonus);
+    // If it is not a weapon, Add the bonus
+    if(!item.criticalRage){
+      for(let i=0;i<item.bonuses.length;i++){
+        let bonus = createBonus({...item.bonuses[i], source:item.slot});
+        this.addBonus(bonus);
+      }
     }
 
     this.activateGear(item, index);
   }
   dequipGear = (item, index) => {
-    for(let i=0;i<item.bonuses.length;i++){
-      let bonus = createBonus({...item.bonuses[i], source:item.slot});
-      this.removeBonus(bonus);
+    // If it is not a weapon, remove the bonus
+    if(item){
+      console.log("not a weapon");
+      console.log(item);
+      for(let i=0;i<item.bonuses.length;i++){
+        let bonus = createBonus({...item.bonuses[i], source:item.slot});
+        this.removeBonus(bonus);
+      }
     }
     
     this.deactivateGear(index);

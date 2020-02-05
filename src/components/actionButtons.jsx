@@ -27,14 +27,14 @@ class ActionButtons extends Component{
   /* Attack Logic           */
   /**************************/
 
-  attackLogic(character){
+  attackLogic(character, weapon){
     /**************************/
     /* Attack Logic           */
     /**************************/
-    let attack = 0;
-    attack = this.getStatSum(character.characterStats, "bab");
-    let damage = 0;
-    let damageDice = "";
+    let attack = this.getStatSum(character.characterStats, "bab");
+    attack += weapon.enhancement;
+    let damage = weapon.enhancement;
+    let damageDice = character.size === 0 ? weapon.damage[1] : weapon.damage[0];
     
     /********************************************/
     /* Checks for feats and applicable weapons  */
@@ -53,8 +53,12 @@ class ActionButtons extends Component{
     }
     
     // Weapon Focus
-    if(character.feats.includes("Weapon Focus (longsword)")){
-      attack += 1;
+    for(let i=0;i<character.feats.length;i++){
+      if(character.feats[i].indexOf("Weapon Focus") > -1){
+        if(character.feats[i].indexOf(weapon.weapon) > -1){
+          attack += 1;
+        }
+      }
     }
 
     // "Combat Expertise"
@@ -74,13 +78,15 @@ class ActionButtons extends Component{
   /**************************/
 
   handleAttack(){
-    const { character, setAttack } = this.context;
+    const { character, setAttack, activeGear } = this.context;
+    const weapon = activeGear[15];
+
     if(character.name === "unknown"){
       alert("Please Select a Character");
       return;
     }
 
-    let attackText = "+" + this.attackLogic(character);
+    let attackText = "+" + this.attackLogic(character, weapon);
     setAttack(attackText);
   }
   handleFullAttack(){

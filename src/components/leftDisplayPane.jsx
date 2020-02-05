@@ -30,10 +30,10 @@ class LeftDisplayPane extends React.Component {
 
 
   handleMainWeaponChange(e){
-    const { character, setOffHandAvailability } = this.context;
+    const { character, setOffHandAvailability, equipGear, dequipGear } = this.context;
 
     // get the selected weapon
-    let weapon = {};
+    let weapon = null;
     let index;
     for(let i=0;i<character.gear.weapons.length;i++){
       if(character.gear.weapons[i].name === e.target.value){
@@ -41,19 +41,29 @@ class LeftDisplayPane extends React.Component {
         index = i;
       }
     }
+    if(weapon){
+      equipGear(weapon, 15);
+    } else {
+      dequipGear(weapon, 15);
+    }
     
     // create an array of options for the other select element
-    let offHandArray1 = character.gear.weapons.slice(0 ,index);
-    let offHandArray2 = character.gear.weapons.slice(index+1, character.gear.weapons.length+1);
-    let offHandArray3 = offHandArray1.concat(offHandArray2);
+    let offHandArray3;
+    if(index){
+      let offHandArray1 = character.gear.weapons.slice(0 ,index);
+      let offHandArray2 = character.gear.weapons.slice(index+1, character.gear.weapons.length+1);
+      offHandArray3 = offHandArray1.concat(offHandArray2);
+    } else {
+      offHandArray3 = character.gear.weapons;
+    }
 
     setOffHandAvailability(offHandArray3);
   }
   handleOffWeaponChange(e){
-    const { character, setMainHandAvailability } = this.context;
+    const { character, setMainHandAvailability, equipGear, dequipGear } = this.context;
 
     // get the selected weapon
-    let weapon = {};
+    let weapon = null;
     let index;
     for(let i=0;i<character.gear.weapons.length;i++){
       if(character.gear.weapons[i].name === e.target.value){
@@ -61,11 +71,20 @@ class LeftDisplayPane extends React.Component {
         index = i;
       }
     }
-    
+    if(weapon){
+      equipGear(weapon, 16);
+    } else {
+      dequipGear(weapon, 16)
+    }
     // create an array of options for the other select element
-    let mainHandArray1 = character.gear.weapons.slice(0 ,index);
-    let mainHandArray2 = character.gear.weapons.slice(index+1, character.gear.weapons.length+1);
-    let mainHandArray3 = mainHandArray1.concat(mainHandArray2);
+    let mainHandArray3;
+    if(index){
+      let mainHandArray1 = character.gear.weapons.slice(0 ,index);
+      let mainHandArray2 = character.gear.weapons.slice(index+1, character.gear.weapons.length+1);
+      mainHandArray3 = mainHandArray1.concat(mainHandArray2);
+    } else {
+      mainHandArray3 = character.gear.weapons;
+    }
 
     setMainHandAvailability(mainHandArray3);
   }
@@ -86,13 +105,6 @@ class LeftDisplayPane extends React.Component {
   render(){
     return (
       <CharacterContext.Consumer>{(context) => {
-        /* var has = require('has');
-        var RequireObjectCoercible = require('es-abstract/2019/RequireObjectCoercible');
-        var callBound = require('es-abstract/helpers/callBound');
-        
-        var $isEnumerable = callBound('Object.prototype.propertyIsEnumerable'); */
-
-
         const { mainHandAvailability, offHandAvailability, equipedGear, activeGear } = context;
         const slots = ["Head", "Headband", "Eyes", "Shoulders", "Neck", "Chest", "Body", 
           "Armor", "Belt", "Wrists", "Hands", "Shield", "Ring1", "Ring2", "Feet"];
@@ -129,7 +141,7 @@ class LeftDisplayPane extends React.Component {
 
 export default LeftDisplayPane;
 
-const gearButtonDiv = (slot) => {
+/* const gearButtonDiv = (slot) => {
   return ( 
     <div className="gearButtonDiv" id={slot}>
       <div>{slot}</div>                  
@@ -141,4 +153,4 @@ const gearButtonDiv = (slot) => {
       </div>
     </div>
    );
-}
+} */
