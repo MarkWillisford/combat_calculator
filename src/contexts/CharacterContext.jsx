@@ -19,7 +19,8 @@ class CharacterContextProvider extends Component {
                 null, null, null, null, null,
                 null, null, null, null, null,
                 null, null],
-    options:["fightingDefensively", "totalDefense"]
+    options:["fightingDefensively", "totalDefense"],
+    activeOptions:[]
   }
 
   selectCharacter = (charName) => {
@@ -71,6 +72,17 @@ class CharacterContextProvider extends Component {
 
     this.setState({ mainHandAvailability: selectedCharacter.gear.weapons});
     this.setState({ offHandAvailability: selectedCharacter.gear.weapons});
+
+    // Load custom options
+    const abilities = selectedCharacter.abilities;
+    let newOptions = this.state.options;
+    for(let i=0;i<abilities.length;i++){
+      let str = abilities[i].replace(/\s+/g, '');
+      str = str.charAt(0).toLowerCase() + str.substring(1);
+      newOptions.push(str);
+    }
+    
+    this.setState({ options:newOptions });
   }
 
   setAttack = (text) => {
@@ -131,6 +143,35 @@ class CharacterContextProvider extends Component {
     this.setState({ activeGear: newActiveGear });
   }
   
+  activateOption = (option) => {
+    let newActiveOptions = this.state.activeOptions;
+    newActiveOptions.push(option);
+    this.setState({ activateOption:newActiveOptions });
+
+    for(let i=0;i<option.bonuses.length;i++){
+      let bonus = createBonus({...option.bonuses[i], name:option.name, duration:-1, source:option.name});
+      this.addBonus(bonus);
+    }
+  }
+  deactivateOption = (option) => {
+    let newActiveOptions = this.state.activeOptions;
+    let optionIndex = null;
+    for(let i=0;i<newActiveOptions.length;i++){
+      if(newActiveOptions[i] === option){
+        optionIndex = i;
+      }
+    }
+    newActiveOptions.splice(optionIndex, 1);
+    this.setState({ activeOptions:newActiveOptions });
+
+    for(let i=0;i<option.bonuses.length;i++){
+      console.log(option);
+      let bonus = createBonus({...option.bonuses[i], name:option.name, duration:-1, source:option.name});
+      this.removeBonus(bonus);
+    }
+  }
+
+
   addBonus(bonus){
     let found = false;
     let foundAt = null;
@@ -224,7 +265,9 @@ class CharacterContextProvider extends Component {
         setMainHandAvailability:this.setMainHandAvailability, 
         setOffHandAvailability:this.setOffHandAvailability,
         equipGear:this.equipGear, 
-        dequipGear:this.dequipGear
+        dequipGear:this.dequipGear,
+        activateOption:this.activateOption,
+        deactivateOption:this.deactivateOption
       }}>
         {this.props.children}
       </CharacterContext.Provider>

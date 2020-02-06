@@ -47,18 +47,8 @@ export const setSum = (stat) => {
       // this means that the type is dodge, untyped, or ranks
       let found = false;
       // checking array of highest bonuses
-      for(let j=0; j<arrayOfHighestBonuses.length; j++){
-        if(arrayOfHighestBonuses[j].type == typeToFind){
-          arrayOfHighestBonuses[j].sum += stat.bonuses[i].amount;
-          arrayOfHighestBonuses[j].bonuses.push(stat.bonuses[i]);
-          found = true;
-        };
-      };
-
-      if(!found){
-        arrayOfHighestBonuses.push(stat.bonuses[i]);
-        total = total + parseInt(stat.bonuses[i].amount, 10);
-      };
+      arrayOfHighestBonuses.push(stat.bonuses[i]);
+      total = total + parseInt(stat.bonuses[i].amount, 10);
     }; 
   };  // end of for loop - array of current bonuses
 

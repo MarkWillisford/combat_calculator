@@ -1,22 +1,59 @@
-export const fightingDefensively = () => {
-  let bonus1 = {
-    "stat":"attack",
-    "type":"dodge",
-    "amount":2
-  }
-  let bonus2 = {
-    "stat":"armorClass",
-    "type":"untyped",
-    "amount":-4
-  }
-  return [bonus1, bonus2];
+/******************/
+/*    ACTIONS     */
+/******************/
+export const fightingDefensively = {
+  "name":"Fighting Defensively",
+  "bonuses":[
+    {
+      "stat":"attack",
+      "type":"untyped",
+      "amount":-4
+    },{
+      "stat":"armorClass",
+      "type":"dodge",
+      "amount":2
+    }
+  ]
 }
 
-export const totalDefense = () => {
-  let bonus = {
-    "stat":"armorClass",
-    "type":"dodge",
-    "amount":4
-  }
-  return [bonus];
+export const totalDefense = {
+  "name":"Total Defense",
+  "bonuses":[
+    {
+      "stat":"armorClass",
+      "type":"dodge",
+      "amount":4
+    }
+  ]
+}
+
+/*******************/
+/*    ABILITES     */
+/*******************/
+export const ser = {
+  "name":"Ser",
+  "bonuses":[]
+}
+
+export const smiteEvil = {
+  "name":"Smite Evil",
+  "bonuses":[]
+}
+
+export const sneakAttack = {
+  "name":"Sneak Attack",
+  "bonuses":[]
+}
+
+/****************/
+/*    FEATS     */
+/****************/
+export const combatExpertise = {
+  "name":"Combat Expertise",
+  "bonuses":[]
+}
+
+export const powerAttack = {
+  "name":"Power Attack",
+  "bonuses":[]
 }

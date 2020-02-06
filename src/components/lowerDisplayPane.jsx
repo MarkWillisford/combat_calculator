@@ -12,24 +12,41 @@ class LowerDisplayPane extends React.Component {
     }
     this.togglePanel = this.togglePanel.bind(this);
   }
+  static contextType = CharacterContext;
 
   togglePanel(e){
-    (e.target.parentNode.classList.contains("expanded") ? e.target.parentNode.classList.remove("expanded") : e.target.parentNode.classList.add("expanded")); 
-    (e.target.parentNode.classList.contains("expanded") ? e.target.classList.add("wide") : e.target.classList.remove("wide"));
+    (e.target.parentNode.classList.contains("lowerExpanded") ? this.closePanel(e.target.parentNode) : this.openPanel(e.target.parentNode))    
+    // (e.target.parentNode.classList.contains("expanded") ? e.target.classList.add("wide") : e.target.classList.remove("wide"));
   }
 
-  toggleSwitch(e, bonus){
-    let array = bonus();
-    console.log(array)
+  closePanel(element){
+    element.classList.remove("lowerExpanded");
+    element.lastChild.classList.add("hidden");
+    element.firstChild.classList.remove("wide");
+  }
+  openPanel(element){
+    element.classList.add("lowerExpanded");
+    element.lastChild.classList.remove("hidden");
+    element.firstChild.classList.add("wide");
+  }
+
+  toggleSwitch(e, option){
+    const { activateOption, deactivateOption } = this.context;
+
+    if(e.target.checked){
+      activateOption(option);
+    } else {
+      deactivateOption(option);
+    }
   }
 
   render(){
     return (
       <CharacterContext.Consumer>{(context) => {
-        const { options } = context;
+        const { options, activeOptions } = context;
         let cbData = [];
-        options.map((o) => (
-          cbData.push(optionsData[o])
+        options.map((option) => (
+          cbData.push(optionsData[option])
         ));
         
         return(
@@ -38,9 +55,9 @@ class LowerDisplayPane extends React.Component {
               OPTIONS
             </div>
             <div className="optionButtons hidden">
-              { cbData.map((o, index) => (
-                <ToggleSwitch key={index} slot={o} cb={(e)=>this.toggleSwitch(e, o)} 
-                item={o} /* owned={gearlist} */ active={true}/>
+              { cbData.map((option, index) => (
+                <ToggleSwitch key={index} slot={option.name} cb={(e)=>this.toggleSwitch(e, option)} 
+                item={option} active={activeOptions.includes(option) ? true : false}/>
               ))}
               {/* 
                 Power Attack, Combat Expertise, Ser, Smite Evil, 
