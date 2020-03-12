@@ -1,3 +1,5 @@
+import { act } from "react-dom/test-utils"
+
 /******************/
 /*    ACTIONS     */
 /******************/
@@ -56,4 +58,18 @@ export const combatExpertise = {
 export const powerAttack = {
   "name":"Power Attack",
   "bonuses":[]
+}
+
+export const checks = {
+  "powerAttack": function(activeOptions, character, getStatSum) {
+    for(let i=0;i<activeOptions.length;i++){
+      if(activeOptions[i].name === "Power Attack"){
+        console.log("running Power Attack calculations");
+        let bab = getStatSum(character.characterStats, "bab");
+        let attk = -Math.ceil(bab/4);
+        let damage = -2*attk;
+        
+      }
+    }
+  }
 }

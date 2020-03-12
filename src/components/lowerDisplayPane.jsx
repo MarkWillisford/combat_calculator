@@ -34,6 +34,7 @@ class LowerDisplayPane extends React.Component {
     const { activateOption, deactivateOption } = this.context;
 
     if(e.target.checked){
+      console.log("checked");
       activateOption(option);
     } else {
       deactivateOption(option);

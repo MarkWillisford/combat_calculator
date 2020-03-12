@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/actionButtons.css';
 import { CharacterContext } from '../contexts/CharacterContext';
+import * as optionsData from '../data/options';
 
 class ActionButtons extends Component{  
   static contextType = CharacterContext;
@@ -27,14 +28,20 @@ class ActionButtons extends Component{
   /* Attack Logic           */
   /**************************/
 
-  attackLogic(character, weapon){
+  attackLogic(character, weapon, activeOptions){
     /**************************/
     /* Attack Logic           */
     /**************************/
-    let attack = this.getStatSum(character.characterStats, "bab");
-    attack += weapon.enhancement;
-    let damage = weapon.enhancement;
-    let damageDice = character.size === 0 ? weapon.damage[1] : weapon.damage[0];
+    let attackOutput = {
+      attackBonus: 0,
+      damageBonus: 0,
+      damageDice: "",
+    }
+
+    attackOutput.attackBonus = this.getStatSum(character.characterStats, "bab");
+    attackOutput.attackBonus += weapon.enhancement;
+    attackOutput.damageBonus = weapon.enhancement;
+    attackOutput.damageDice = character.size === 0 ? weapon.damage[1] : weapon.damage[0];
     
     /********************************************/
     /* Checks for feats and applicable weapons  */
@@ -45,24 +52,36 @@ class ActionButtons extends Component{
       // written as is for ease of reading
       let stat = this.getStatSum(character.characterStats, "dexterity");
       let mod = this.getAbilityScoreMod(stat);
-      attack += mod;
+      attackOutput.attackBonus += mod;
     } else {
       let stat = this.getStatSum(character.characterStats, "strength");
       let mod = this.getAbilityScoreMod(stat);
-      attack += mod;
+      attackOutput.attackBonus += mod;
     }
     
     // Weapon Focus
     for(let i=0;i<character.feats.length;i++){
       if(character.feats[i].indexOf("Weapon Focus") > -1){
         if(character.feats[i].indexOf(weapon.weapon) > -1){
-          attack += 1;
+          attackOutput.attackBonus += 1;
         }
       }
     }
 
     // "Combat Expertise"
-    // "Power Attack"
+    // "Power Attack"    
+    /*************************************/
+    /*   Saving this for next version    */
+    /*************************************/
+    /* Object.keys(optionsData.checks).forEach((call) => {
+      optionsData.checks[call](activeOptions, character, this.getStatSum);
+    }) */
+    //console.log(activeOptions);
+    //let { attack, defense, whatver } = this.state;
+
+    //doLoop()
+
+    //this.setState({attack, defense})
 
     // Smite Evil
     // Ser
@@ -70,7 +89,7 @@ class ActionButtons extends Component{
     // Stolen Fury
     // Dodge
 
-    return attack;
+    return attackOutput.attackBonus;
   }
 
   /**************************/
@@ -78,15 +97,19 @@ class ActionButtons extends Component{
   /**************************/
 
   handleAttack(){
-    const { character, setAttack, activeGear } = this.context;
+    const { character, setAttack, activeGear, activeOptions } = this.context;
     const weapon = activeGear[15];
 
     if(character.name === "unknown"){
       alert("Please Select a Character");
       return;
     }
+    if(!weapon){
+      alert("Please equip a weapon");
+      return;
+    }
 
-    let attackText = "+" + this.attackLogic(character, weapon);
+    let attackText = "+" + this.attackLogic(character, weapon, activeOptions);
     setAttack(attackText);
   }
   handleFullAttack(){
@@ -96,7 +119,7 @@ class ActionButtons extends Component{
       return;
     }
     
-    let fullAttackText = "+" + this.attackLogic(character);
+    // let fullAttackText = "+" + this.attackLogic(character);
 
     /**************************/
     /* Full Attack Logic      */
@@ -104,7 +127,7 @@ class ActionButtons extends Component{
 
     // "Two Weapon Fighting"
 
-    setFullAttack(fullAttackText);
+    // setFullAttack(fullAttackText);
   }
   handleChargeAttack(){
     const { character, setChargeAttack } = this.context;
@@ -112,13 +135,13 @@ class ActionButtons extends Component{
       alert("Please Select a Character");
       return;
     }
-    let chargeAttackText = "+" + this.attackLogic(character);
+    // let chargeAttackText = "+" + this.attackLogic(character);
 
     /**************************/
     /* Charge Attack Logic    */
     /**************************/
 
-    setChargeAttack(chargeAttackText);
+    // setChargeAttack(chargeAttackText);
 
   }
 

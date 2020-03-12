@@ -1,6 +1,7 @@
 import React, { createContext, Component } from 'react';
 import { createBonus, setSum, createStat } from '../utility/statObjectFactories'
 import { findGearSlotIndex } from '../utility/helperFunctions';
+import * as optionsData from '../data/options';
 
 export const CharacterContext = createContext();
 
@@ -65,9 +66,22 @@ class CharacterContextProvider extends Component {
         } else {
           newEquipedGear.push(this.state.character.gear.itemSlots[item]);
         }
-      })
-
+      });
       this.setState({ equipedGear: newEquipedGear });
+
+      if(this.state.character.feats){
+        let newOptions = this.state.options;
+        let optionCheckCalls = [];
+        for(let i=0; i<this.state.character.feats.length;i++){
+          let str = this.state.character.feats[i].replace(/\s+/g, '');
+          str = str.charAt(0).toLowerCase() + str.substring(1);
+
+          if(optionsData[str]){
+            newOptions.push(str);
+          }
+        }
+        this.setState({ options:newOptions });
+      }
     });
 
     this.setState({ mainHandAvailability: selectedCharacter.gear.weapons});
@@ -146,7 +160,7 @@ class CharacterContextProvider extends Component {
   activateOption = (option) => {
     let newActiveOptions = this.state.activeOptions;
     newActiveOptions.push(option);
-    this.setState({ activateOption:newActiveOptions });
+    this.setState({ activeOptions:newActiveOptions });
 
     for(let i=0;i<option.bonuses.length;i++){
       let bonus = createBonus({...option.bonuses[i], name:option.name, duration:-1, source:option.name});
