@@ -28,20 +28,21 @@ class ActionButtons extends Component{
   /* Attack Logic           */
   /**************************/
 
-  attackLogic(character, weapon, activeOptions){
+  attackLogic(character, weapon, whichAttack, activeOptions){
     /**************************/
     /* Attack Logic           */
     /**************************/
-    let attackOutput = {
+    let statsOutput = {
       attackBonus: 0,
       damageBonus: 0,
       damageDice: "",
+      AC:0
     }
 
-    attackOutput.attackBonus = this.getStatSum(character.characterStats, "bab");
-    attackOutput.attackBonus += weapon.enhancement;
-    attackOutput.damageBonus = weapon.enhancement;
-    attackOutput.damageDice = character.size === 0 ? weapon.damage[1] : weapon.damage[0];
+    statsOutput.attackBonus = this.getStatSum(character.characterStats, "bab");
+    statsOutput.attackBonus += weapon.enhancement;
+    statsOutput.damageBonus = weapon.enhancement;
+    statsOutput.damageDice = character.size === 0 ? weapon.damage[1] : weapon.damage[0];
     
     /********************************************/
     /* Checks for feats and applicable weapons  */
@@ -52,44 +53,36 @@ class ActionButtons extends Component{
       // written as is for ease of reading
       let stat = this.getStatSum(character.characterStats, "dexterity");
       let mod = this.getAbilityScoreMod(stat);
-      attackOutput.attackBonus += mod;
+      statsOutput.attackBonus += mod;
     } else {
       let stat = this.getStatSum(character.characterStats, "strength");
       let mod = this.getAbilityScoreMod(stat);
-      attackOutput.attackBonus += mod;
+      statsOutput.attackBonus += mod;
     }
     
     // Weapon Focus
     for(let i=0;i<character.feats.length;i++){
       if(character.feats[i].indexOf("Weapon Focus") > -1){
         if(character.feats[i].indexOf(weapon.weapon) > -1){
-          attackOutput.attackBonus += 1;
+          statsOutput.attackBonus += 1;
         }
       }
     }
 
     // "Combat Expertise"
-    // "Power Attack"    
-    /*************************************/
-    /*   Saving this for next version    */
-    /*************************************/
-    /* Object.keys(optionsData.checks).forEach((call) => {
-      optionsData.checks[call](activeOptions, character, this.getStatSum);
-    }) */
-    //console.log(activeOptions);
-    //let { attack, defense, whatver } = this.state;
-
-    //doLoop()
-
-    //this.setState({attack, defense})
+    // "Power Attack"
+    Object.keys(optionsData.checks).forEach((call) => {
+      optionsData.checks[call](activeOptions, character, this.getStatSum, whichAttack, statsOutput);
+    })
 
     // Smite Evil
+    
     // Ser
     // "Accomplished Sneak Attacker"
     // Stolen Fury
     // Dodge
 
-    return attackOutput.attackBonus;
+    return statsOutput.attackBonus;
   }
 
   /**************************/
@@ -99,6 +92,7 @@ class ActionButtons extends Component{
   handleAttack(){
     const { character, setAttack, activeGear, activeOptions } = this.context;
     const weapon = activeGear[15];
+    const offWeapon = activeGear[16];
 
     if(character.name === "unknown"){
       alert("Please Select a Character");
@@ -109,7 +103,8 @@ class ActionButtons extends Component{
       return;
     }
 
-    let attackText = "+" + this.attackLogic(character, weapon, activeOptions);
+    let whichAttack = "twoHanded";
+    let attackText = "+" + this.attackLogic(character, weapon, whichAttack, activeOptions);
     setAttack(attackText);
   }
   handleFullAttack(){
