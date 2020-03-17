@@ -98,6 +98,7 @@ export const checks = {
       if(activeOptions[i].name === "Smite Evil"){
         let hd = character.hd;
         let cha = getStatSum(character.characterStats, "charisma");
+        let bab = getStatSum(character.characterStats, "bab");
         let attk = -Math.ceil(bab/4);
         let ac = attk;
 

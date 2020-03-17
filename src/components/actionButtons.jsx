@@ -78,6 +78,11 @@ class ActionButtons extends Component{
     // Smite Evil
     
     // Ser
+    for(let i=0;i<activeOptions.length;i++){
+      if(activeOptions[i].name === "Ser"){
+        statsOutput.damageDice += " +1d6 (Sacred)";
+      }
+    }
     // "Accomplished Sneak Attacker"
     // Stolen Fury
     // Dodge
