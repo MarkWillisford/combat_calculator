@@ -28,7 +28,7 @@ class ActionButtons extends Component{
   /* Attack Logic           */
   /**************************/
 
-  attackLogic(character, weapon, whichAttack, activeOptions){
+  attackLogic(character, weapon, whichAttack, activeOptions, irative){
     /**************************/
     /* Attack Logic           */
     /**************************/
@@ -36,13 +36,31 @@ class ActionButtons extends Component{
       attackBonus: 0,
       damageBonus: 0,
       damageDice: "",
-      AC:0
+      AC:0,
+      FFAC:0,
+      TAC:0,
     }
 
-    statsOutput.attackBonus = this.getStatSum(character.characterStats, "bab");
+    statsOutput.attackBonus = this.getStatSum(character.characterStats, "bab") - ((irative-1)*5);
+    console.log("adding bab");
+    console.log(this.getStatSum(character.characterStats, "bab") - ((irative-1)*5));
     statsOutput.attackBonus += weapon.enhancement;
+    console.log("adding weapon enhancement to attack and dam");
+    console.log(weapon.enhancement);
     statsOutput.damageBonus = weapon.enhancement;
     statsOutput.damageDice = character.size === 0 ? weapon.damage[1] : weapon.damage[0];
+    
+    /********************************************/
+    /*     Checks for existing stat bonuses     */
+    /********************************************/
+    const atkBonus = this.getStatSum(character.characterStats, "attack");
+    const damBonus = this.getStatSum(character.characterStats, "damage");
+    statsOutput.attackBonus += isNaN(atkBonus) ? 0 : atkBonus;
+    statsOutput.damageBonus += isNaN(damBonus) ? 0 : damBonus;    
+    console.log("adding existing attk");
+    console.log(atkBonus);
+    console.log("adding existing dam");
+    console.log(damBonus);
     
     /********************************************/
     /* Checks for feats and applicable weapons  */
@@ -54,10 +72,14 @@ class ActionButtons extends Component{
       let stat = this.getStatSum(character.characterStats, "dexterity");
       let mod = this.getAbilityScoreMod(stat);
       statsOutput.attackBonus += mod;
+      console.log("adding dex");
+      console.log(mod);
     } else {
       let stat = this.getStatSum(character.characterStats, "strength");
       let mod = this.getAbilityScoreMod(stat);
       statsOutput.attackBonus += mod;
+      console.log("adding str");
+      console.log(mod);
     }
     
     // Weapon Focus
@@ -65,29 +87,27 @@ class ActionButtons extends Component{
       if(character.feats[i].indexOf("Weapon Focus") > -1){
         if(character.feats[i].indexOf(weapon.weapon) > -1){
           statsOutput.attackBonus += 1;
+          console.log("adding WF");
+          console.log("1");
         }
       }
     }
 
     // "Combat Expertise"
     // "Power Attack"
+    // "Smite Evil"
     Object.keys(optionsData.checks).forEach((call) => {
-      optionsData.checks[call](activeOptions, character, this.getStatSum, whichAttack, statsOutput);
+      optionsData.checks[call](activeOptions, character, this.getStatSum, whichAttack, statsOutput, irative);
     })
 
-    // Smite Evil
-    
     // Ser
     for(let i=0;i<activeOptions.length;i++){
       if(activeOptions[i].name === "Ser"){
         statsOutput.damageDice += " +1d6 (Sacred)";
       }
     }
-    // "Accomplished Sneak Attacker"
-    // Stolen Fury
-    // Dodge
 
-    return statsOutput.attackBonus;
+    return statsOutput;
   }
 
   /**************************/
@@ -98,6 +118,8 @@ class ActionButtons extends Component{
     const { character, setAttack, activeGear, activeOptions } = this.context;
     const weapon = activeGear[15];
     const offWeapon = activeGear[16];
+    const irative = 1;
+    let whichAttack;
 
     if(character.name === "unknown"){
       alert("Please Select a Character");
@@ -108,26 +130,61 @@ class ActionButtons extends Component{
       return;
     }
 
-    let whichAttack = "twoHanded";
-    let attackText = "+" + this.attackLogic(character, weapon, whichAttack, activeOptions);
+    if(!offWeapon){
+      whichAttack = "twoHanded";
+    } else{
+      whichAttack = "main";
+    }
+    const attackStatsObject = this.attackLogic(character, weapon, whichAttack, activeOptions, irative);
+    console.log(attackStatsObject);
+
+    let attackText = "+" + attackStatsObject.attackBonus + " (" + attackStatsObject.damageDice + " + " + attackStatsObject.damageBonus + ")";
     setAttack(attackText);
   }
   handleFullAttack(){
-    const { character, setFullAttack } = this.context;
+    const { character, setFullAttack, activeGear, activeOptions } = this.context;
+    const weapon = activeGear[15];
+    const offWeapon = activeGear[16];
+    const irative = 1;
+    let whichAttack;
+    let attackTextArray = [];
+
     if(character.name === "unknown"){
       alert("Please Select a Character");
       return;
     }
-    
-    // let fullAttackText = "+" + this.attackLogic(character);
+    if(!weapon){
+      alert("Please equip a weapon");
+      return;
+    }
 
     /**************************/
     /* Full Attack Logic      */
     /**************************/
+    if(!offWeapon){
+      // we are only wielding one weapon, procede as normal
+      whichAttack = "twoHanded";
+      let bab = this.getStatSum(character.characterStats, "bab");
+      let counter = 1;
+      for(let i=bab;i>0;i-=5){
+        let attackText = {};
+        const irative = counter;
+        const attackStatsObject = this.attackLogic(character, weapon, whichAttack, activeOptions, irative);
+        console.log(attackStatsObject);
+        attackText.attackBonus = "+" + attackStatsObject.attackBonus;
+        attackText.damageBonus = " (" + attackStatsObject.damageDice + " + " + attackStatsObject.damageBonus + ")";
+        counter++;
+        attackTextArray.push(attackText);
+      }
+    } else{
+      // "Two Weapon Fighting"
 
-    // "Two Weapon Fighting"
+    }
 
-    // setFullAttack(fullAttackText);
+    console.log(attackTextArray);
+
+    let attackText="array";
+    setFullAttack(attackText);
   }
   handleChargeAttack(){
     const { character, setChargeAttack } = this.context;

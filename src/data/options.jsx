@@ -1,5 +1,6 @@
 import { act } from "react-dom/test-utils"
 
+
 /******************/
 /*    ACTIONS     */
 /******************/
@@ -61,7 +62,7 @@ export const powerAttack = {
 }
 
 export const checks = {
-  "powerAttack": function(activeOptions, character, getStatSum, whichAttack, statsOutput) {
+  "powerAttack": function(activeOptions, character, getStatSum, whichAttackType, statsOutput, irrative) {
     for(let i=0;i<activeOptions.length;i++){
       if(activeOptions[i].name === "Power Attack"){
         console.log("running Power Attack calculations");
@@ -70,9 +71,9 @@ export const checks = {
         let damage = -2*attk;
 
         // check for which attack
-        if(whichAttack === "off"){
+        if(whichAttackType === "off"){
           damage = damage*.5;
-        } else if (whichAttack === "twoHanded"){
+        } else if (whichAttackType === "twoHanded"){
           damage = damage*1.5;
         }
         
@@ -81,7 +82,7 @@ export const checks = {
       }
     }
   },  
-  "combatExpertise": function(activeOptions, character, getStatSum, whichAttack, statsOutput) {
+  "combatExpertise": function(activeOptions, character, getStatSum, whichAttackType, statsOutput, irrative) {
     for(let i=0;i<activeOptions.length;i++){
       if(activeOptions[i].name === "Combat Expertise"){
         let bab = getStatSum(character.characterStats, "bab");
@@ -93,18 +94,48 @@ export const checks = {
       }
     }
   }, 
-  "smiteEvil": function(activeOptions, character, getStatSum, whichAttack, statsOutput) {
+  "smiteEvil": function(activeOptions, character, getStatSum, whichAttackType, statsOutput, irrative) {
     for(let i=0;i<activeOptions.length;i++){
+      // has option been selected?
       if(activeOptions[i].name === "Smite Evil"){
-        let hd = character.hd;
-        let cha = getStatSum(character.characterStats, "charisma");
-        let bab = getStatSum(character.characterStats, "bab");
-        let attk = -Math.ceil(bab/4);
-        let ac = attk;
+        const hd = character.hd;
+        const cha = getStatSum(character.characterStats, "charisma");
+        const chaMod = Math.floor((cha - 10) / 2);
 
-        statsOutput.attackBonus += attk;
-        statsOutput.AC += ac;
+        statsOutput.attackBonus += chaMod;
+        console.log("adding cha to attk");
+        console.log(chaMod);
+        // If it is the first attack, check for double damage
+        if(irrative === 1){
+          if(window.confirm('Are you facing an evil outsider, undead or big bad dragon?')) {
+            statsOutput.damageBonus += 2*hd;
+            console.log("adding 2x hd to dam");
+            console.log(2*hd);
+          }
+        } else {
+          statsOutput.damageBonus += hd;
+          console.log("adding hd to dam");
+          console.log(hd);
+        }
+
+        // Check for existing Deflection bonus to AC
+        let existingDeflectionBonus = 0;
+        for(let i=0;i<character.characterStats.length;i++){
+          if(character.characterStats[i].name === "armorClass"){
+            for(let j=0;j<character.characterStats[i].bonuses.length;j++){
+              if(character.characterStats[i].bonuses[j].type === "deflection"){
+                existingDeflectionBonus = character.characterStats[i].bonuses[j].amount;
+              }
+            }
+          }
+        }
+        const deflectionBonusDifference = chaMod - existingDeflectionBonus;
+        if(deflectionBonusDifference > 0){
+          statsOutput.AC += deflectionBonusDifference;
+          statsOutput.TAC += deflectionBonusDifference;
+        }
       }
     }
   }
+
 }
