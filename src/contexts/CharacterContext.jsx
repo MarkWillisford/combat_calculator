@@ -67,11 +67,22 @@ class CharacterContextProvider extends Component {
           newEquipedGear.push(this.state.character.gear.itemSlots[item]);
         }
       });
+      
+      // activate and equip the main hand weapon, and remove it from the available choices
+      this.activateGear(this.state.character.gear.weapons[0], 15);
+      let offHandArray3;
+      let offHandArray1 = this.state.character.gear.weapons.slice(0 ,0);
+      let offHandArray2 = this.state.character.gear.weapons.slice(0+1, this.state.character.gear.weapons.length+1);
+      offHandArray3 = offHandArray1.concat(offHandArray2);
+
+      this.setOffHandAvailability(offHandArray3);
+      newEquipedGear.push(this.state.character.gear.weapons[0]);
+
       this.setState({ equipedGear: newEquipedGear });
 
+      // apply character feats
       if(this.state.character.feats){
         let newOptions = this.state.options;
-        let optionCheckCalls = [];
         for(let i=0; i<this.state.character.feats.length;i++){
           let str = this.state.character.feats[i].replace(/\s+/g, '');
           str = str.charAt(0).toLowerCase() + str.substring(1);

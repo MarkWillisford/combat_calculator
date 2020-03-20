@@ -33,6 +33,7 @@ class LeftDisplayPane extends React.Component {
 
     // get the selected weapon
     let weapon = null;
+
     let index;
     for(let i=0;i<character.gear.weapons.length;i++){
       if(character.gear.weapons[i].name === e.target.value){
@@ -40,6 +41,7 @@ class LeftDisplayPane extends React.Component {
         index = i;
       }
     }
+
     if(weapon){
       equipGear(weapon, 15);
     } else {
@@ -107,7 +109,7 @@ class LeftDisplayPane extends React.Component {
         const { mainHandAvailability, offHandAvailability, equipedGear, activeGear } = context;
         const slots = ["Head", "Headband", "Eyes", "Shoulders", "Neck", "Chest", "Body", 
           "Armor", "Belt", "Wrists", "Hands", "Shield", "Ring1", "Ring2", "Feet"];
-
+        
         return(
           <div className="leftDisplayPane">
             <div className="title" onClick={(e)=>this.togglePanel(e)}>
@@ -119,7 +121,7 @@ class LeftDisplayPane extends React.Component {
               <div className="gearButtonDiv" id="mainHand">
                 Main Hand
                 <select onChange={this.handleMainWeaponChange.bind(this)}>
-                  <option value="-1">Select</option>
+                  {/* <option value="-1">Select</option> */}
                   { mainHandAvailability.map((w) => <option key={w.name} value={w.name}>{w.name}</option>) }) }
                 </select>
               </div>

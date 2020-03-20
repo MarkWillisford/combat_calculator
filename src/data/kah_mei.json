@@ -230,7 +230,19 @@
     }
   ],
   "gear":{
-    "weapons":[    
+    "weapons":[
+      {
+        "name":"Radiance",
+        "weapon":"longsword",
+        "category":"light",
+        "damage":["1d6","1d8"],
+        "criticalRage":19,
+        "criticalMultiplier":2,
+        "material":"unknown",
+        "masterwork":true,
+        "enhancement":2,
+        "enhancements":[]
+      },
       {
         "name":"dagger",
         "weapon":"dagger",
@@ -253,18 +265,6 @@
         "material":"normal",
         "masterwork":false,
         "enhancement":0,
-        "enhancements":[]
-      },
-      {
-        "name":"Radiance",
-        "weapon":"longsword",
-        "category":"light",
-        "damage":["1d6","1d8"],
-        "criticalRage":19,
-        "criticalMultiplier":2,
-        "material":"unknown",
-        "masterwork":true,
-        "enhancement":2,
         "enhancements":[]
       }
     ],
